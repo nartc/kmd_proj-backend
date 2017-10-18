@@ -1,0 +1,12 @@
+{
+  "name": "node-backend",
+  "version": "1.0.0",
+  "description": "Node Backend for Kmd Proj",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app"
+  },
+  "author": "Chau",
+  "license": "MIT"
+}
