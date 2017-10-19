@@ -78,6 +78,10 @@ app.all('/*', (req, res) => {
 
 //Start Server
 app.listen(port, () => {
-    console.log('Server started on: '+port);
+    if(port === 8080) {
+        console.log(`Server started on http://localhost:${port}`);
+    } else {
+        console.log(`Server started on ${port}`);
+    }
 });
 
