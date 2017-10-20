@@ -4,7 +4,11 @@ const bcrypt = require('bcryptjs');
 const mongooseUnique = require('mongoose-unique-validator');
 
 const UserSchema = new Schema({
-    nickname: String,
+    nickname: {
+        type: String,
+        unique: true,
+        required: true
+    },
     email: {
         type: String,
         required: true,
@@ -17,7 +21,7 @@ const UserSchema = new Schema({
     },
     privilege: {
         type: String,
-        required: true
+        default: 'Registered'
     },
     createdOn: {
         type: Date,
