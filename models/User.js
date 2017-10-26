@@ -59,7 +59,8 @@ module.exports.registerUser = (newUser, callback) => {
 }
 
 module.exports.getUserById = (id, callback) => {
-    User.findById(id, callback);
+    User.findById(id, '-password -__v')
+        .exec(callback);
 }
 
 module.exports.getUserByEmail = (email, callback) => {

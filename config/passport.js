@@ -11,14 +11,13 @@ module.exports = (passport) => {
     options.secretOrKey = config.secretKEY;
 
     passport.use(new JwtStrategy(options, (jwt_payload, done) => {
-        console.log('JWT_Payload', jwt_payload);
         User.getUserById(jwt_payload.user._id, (err, user) => {
             if(err) {
                 return done(err, false);
             }
 
             if(user) {
-                return done(null, user);
+                return done(null, user, {issuedAt: jwt_payload.iat});
             } else {
                 return done(null, false);
             }

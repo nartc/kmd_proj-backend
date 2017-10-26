@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const passportJwt = require('passport-jwt');
 const jwt = require('jsonwebtoken');
+const util = require('util');
 
 const config = require('../config/keys');
 const User = require('../models/User');
@@ -23,6 +23,7 @@ router.post('/register', (req, res) => {
         if(err) {
             return res.json({
                 success: false,
+                title: 'Error',
                 message: 'Error registering new User',
                 error: err
             });
@@ -30,6 +31,7 @@ router.post('/register', (req, res) => {
 
         res.json({
             success: true,
+            title: 'Success',
             message: 'New User registered',
             user: user
         });
@@ -45,6 +47,7 @@ router.post('/login', (req, res) => {
         if(err) {
             return res.json({
                 success: false,
+                title: 'Error',
                 message: 'Error getting User by email',
                 error: err
             });
@@ -53,6 +56,7 @@ router.post('/login', (req, res) => {
         if(!user) {
             return res.json({
                 success: false,
+                title: 'Error',
                 message: `Email ${email} does not exist`
             });
         }
@@ -61,6 +65,7 @@ router.post('/login', (req, res) => {
             if(err) {
                 return res.json({
                     success: false,
+                    title: 'Error',
                     message: 'Error comparing password',
                     error: err
                 });
@@ -69,6 +74,7 @@ router.post('/login', (req, res) => {
             if(!isMatched) {
                 res.json({
                    success: false,
+                   title: 'Error',
                    message: 'Password does not match' 
                 });
             } else {
@@ -78,6 +84,7 @@ router.post('/login', (req, res) => {
                     if(err) {
                         return res.json({
                             success: false,
+                            title: 'Error',
                             message: 'Error authenticating',
                             error: err
                         });
@@ -85,6 +92,7 @@ router.post('/login', (req, res) => {
 
                     res.json({
                         success: true,
+                        title: 'Success',
                         message: 'Logged In',
                         authToken: `JWT ${token}`,
                         user: {
@@ -95,6 +103,30 @@ router.post('/login', (req, res) => {
                     });
                 });
             }
+        });
+    });
+});
+
+//Get Single User
+router.get('/profile/:id', passport.authenticate('jwt', {session:false}), (req, res) => {
+    User.getUserById(req.params.id, (err, user) => {
+        if(err) {
+            return res.json({
+                success: false,
+                title: 'Error',
+                message: 'Error fetching User by Id',
+                error: err
+            });
+        }
+
+        let issuedAt = new Date(req.authInfo.issuedAt*1000);
+
+        res.json({
+            success: true,
+            title: 'Success',
+            message: 'User data fetched',
+            issuedAt: issuedAt,
+            user: user
         });
     });
 });
