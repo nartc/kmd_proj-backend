@@ -43,6 +43,7 @@ const port = process.env.PORT || 8080;
 
 //Load Routes
 const users = require('./routes/users');
+const languages = require('./routes/languages');
 
 //CORS Middleware
 app.use(cors());
@@ -65,6 +66,7 @@ app.use(express.static(path.join(__dirname, 'build')));
 
 //Use Routes
 app.use('/users', users);
+app.use('/languages', languages);
 
 //Testing index route
 app.get('/', (req, res) => {

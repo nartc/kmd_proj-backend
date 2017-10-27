@@ -1,0 +1,92 @@
+{
+    "languages": [
+        {
+            "name": "AngularJS",
+            "type": "Framework",
+            "code": "ng",
+            "parent": "JavaScript"
+        },
+        {
+            "name": "Angular",
+            "type": "Framework",
+            "code": "ngx",
+            "parent": "JavaScript"
+        },
+        {
+            "name": "React",
+            "type": "Framework",
+            "code": "rct",
+            "parent": "JavaScript"
+        },
+        {
+            "name": "NodeJS",
+            "type": "Framework",
+            "code": "node",
+            "parent": "JavaScript"
+        },
+        {
+            "name": "JavaScript",
+            "type": "Language",
+            "code": "js"
+        },
+        {
+            "name": "C#",
+            "type": "Language",
+            "code": "c#"
+        },
+        {
+            "name": "C++",
+            "type": "Language",
+            "code": "c++"
+        },
+        {
+            "name": "VueJS",
+            "type": "Framework",
+            "code": "vue",
+            "parent": "JavaScript"
+        },
+        {
+            "name": "Python",
+            "type": "Language",
+            "code": "py"
+        },
+        {
+            "name": "Django",
+            "type": "Framework",
+            "code": "dj",
+            "parent": "Python"
+        },
+        {
+            "name": "HTML5",
+            "type": "Language",
+            "code": "html"
+        },
+        {
+            "name": "CSS3",
+            "type": "Language",
+            "code": "css"
+        },
+        {
+            "name": "Bootstrap 4",
+            "type": "Framework",
+            "code": "bs4",
+            "parent": "CSS3"
+        },
+        {
+            "name": "MaterializeCSS",
+            "type": "Framework",
+            "code": "mat",
+            "parent": "CSS3"
+        },
+        {
+            "name": "MongoDB",
+            "type": "NoSQLDatabase",
+            "code": "mon"
+        },
+        {
+            "name": "MySQL",
+            "type": "SQLDatabase",
+            "code": "sql"
+        }
+    ]
+}
