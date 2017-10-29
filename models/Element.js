@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const Language = require('./Language');
+
 const ElementSchema = new Schema({
     type: {
         type: String,
@@ -12,7 +14,8 @@ const ElementSchema = new Schema({
     },
     description: String,
     languages: [{
-        type: String
+        type: Schema.Types.ObjectId,
+        ref: 'Language'
     }],
     content: {
         type: String,
@@ -41,12 +44,14 @@ const Element = module.exports = mongoose.model('Element', ElementSchema);
 
 //Exported Functions
 module.exports.addElement = (newElement, callback) => {
+    console.log(newElement);
     newElement.save(callback);
 }
 
 module.exports.getAllElements = (callback) => {
     Element.find()
-        .populate('user', '-password -elements')
+        .populate('user', '-password -__v')
+        .populate('languages', '-__v')
         .exec(callback);
 }
 

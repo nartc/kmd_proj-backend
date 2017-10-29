@@ -1,16 +1,21 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
+const _ = require('lodash');
 
 const Element = require('../models/Element');
 const User = require('../models/User');
+const Language = require('../models/Language');
 
 //Add this to the route you want to protect: 'passport.authenticate('jwt', {session:false})'
 //example: router.get('/:id', passport.authenticate('jwt', {session:false}), (req, res, next) => {});
 
 //Add Element
-router.post('/add', passport.authenticate('jwt', {session:false}), (req, res) => {
+router.post('/add', passport.authenticate('jwt', {
+    session: false
+}), (req, res) => {
     User.findById(req.user._id, (err, user) => {
-        if(err) {
+        if (err) {
             return res.json({
                 success: false,
                 message: 'Error getting User by Id',
@@ -18,14 +23,12 @@ router.post('/add', passport.authenticate('jwt', {session:false}), (req, res) =>
             });
         }
 
-        if(!user) {
+        if (!user) {
             return res.json({
                 success: false,
                 message: 'Not Authenticated'
             });
         }
-
-        //TODO: Role
 
         let newElement = new Element({
             type: req.body.element.type,
@@ -35,26 +38,67 @@ router.post('/add', passport.authenticate('jwt', {session:false}), (req, res) =>
             user: user
         });
 
-        Element.addElement(newElement, (err, element) => {
-            if(err) {
+        //TODO: Role
+        let languageIds = _.map(req.body.element.languages, '_id');
+
+        Language.getLanguagesByIds(languageIds, (err, languages) => {
+            console.log()
+            if (err) {
                 return res.json({
                     success: false,
-                    message: 'Error adding new Element',
+                    title: 'Error',
+                    message: 'Error getting Languages by Ids',
                     error: err
                 });
             }
 
-            user.elements.push(element._id);
-            user.save();
+            newElement.languages = languages;
 
-            res.json({
-                success: true,
-                message: 'Element added successfully',
-                element: element
+            Element.addElement(newElement, (err, element) => {
+                if (err) {
+                    return res.json({
+                        success: false,
+                        title: 'Error',
+                        message: 'Error adding new Element',
+                        error: err
+                    });
+                }
+
+                user.elements.push(element._id);
+                user.save();
+
+                res.json({
+                    success: true,
+                    title: 'Success',
+                    message: 'New element added',
+                    element: element
+                });
             });
         });
     });
-}); 
+});
+
+
+//Get All Elements
+router.get('/', (req, res) => {
+    Element.getAllElements((err, elements) => {
+        if(err) {
+            return res.json({
+                success: false,
+                title: 'Error',
+                message: 'Error fetching elements',
+                error: err
+            });
+        }
+
+        res.json({
+            success: true,
+            title: 'Success',
+            message: 'All elements fetched',
+            elements: elements
+        });
+    });
+});
 
 
 module.exports = router;

@@ -5,8 +5,7 @@ const Schema = mongoose.Schema;
 const LanguageSchema = new Schema({
     name: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     type: {
         type: String,
@@ -16,8 +15,7 @@ const LanguageSchema = new Schema({
         type: String
     },
     code: {
-        type: String,
-        unique: true
+        type: String
     }
 });
 
@@ -27,7 +25,14 @@ const Language = module.exports = mongoose.model('Language', LanguageSchema);
 
 module.exports.getLanguages = (callback) => {
     Language.find()
-        .select('-_id -__v')
+        .select('-__v')
+        .exec(callback);
+}
+
+module.exports.getLanguagesByIds = (languageIds, callback) => {
+    let query = {_id: {$in: languageIds}};
+    Language.find(query)
+        .select('-__v')
         .exec(callback);
 }
 
